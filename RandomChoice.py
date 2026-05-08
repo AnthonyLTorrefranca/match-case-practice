@@ -1,48 +1,51 @@
 import random
-
-positions = [
+position = (
     "Heads",
     "Tails",
-]
-print("Let's play a game Heads and Tails where you choose between the heads and tails👍\n")
+)
 
-def user_choice():
-    choice = input("Input yours: ").title()
-    if choice not in positions:
-        print("Nah uh not in the choices\n")
-
-    if choice in ("H", "He", "Hea", "Head", "Heads"):
-        choice = "Heads"
-    elif choice in ("T", "Ta", "Tai", "Tail", "Tails"):
-        choice = "Tails"
-    return choice
-
-game = True
-while game:
-    winner_choice = random.choice(positions)
-    bot_choice = random.choice(positions)
-    uchoice = user_choice()
-    while uchoice not in positions:
-        print("Heads and Tails only!")
-        uchoice = user_choice()
-
-    match (uchoice == winner_choice, bot_choice == winner_choice,):
-        case (True, True):
-            print("It's a draw!\n")
-        case (True, False):
-            print("You win!\n")
-        case (False, True):
-            print("Opponent wins!\n")
-        case (False, False,):
-            print("No one wins!\n")
-
+def game():
+    winning = random.choice(position)
+    bot = random.choice(position)
+    print("Let's play heads and tails game!")
     while True:
-        proceed = input("Continue? Yes or No only: ").title()
-        if proceed in ("Y", "Ye", "Yes"):
-            print("Let's play the heads and tails again!👍")
-            break
-        elif proceed in ("N", "No", "Nop", "Nope", "Not"):
-            game = False
-            break
-        else:
-            print("Nope, not in the choices!")
+        user = input("Enter your choice here: ").title()
+        match user:
+            case "H" | "He" | "Hea" | "Head" | "Heads":
+                user = "Heads"
+                break
+            case "T" | "Ta" | "Tai" | "Tail" | "Tails":
+                user = "Tails"
+                break
+            case _:
+                print("Nah uh Heads or Tails only!☝️")
+
+    match (user == winning, bot == winning):
+        case (False, False):
+            result = "it's a draw, none chooses the winning choice!"
+        case (True, True):
+            result = "it's a draw, you both won!"
+        case (False, True):
+            result = "you loses the bot won!"
+        case (True, False):
+            result = "you won the bot loses!"
+    print(f"Winning choice is {winning!r}, {result}")
+
+def proceed():
+    while True:
+        shall = input("Shall we continue? Yes or no only: ").title()
+        match shall:
+            case "Y" | "Yep" | "Yeah" | "Yes":
+                flip = True
+                break
+            case "N" | "No" | "Nah" | "Nope":
+                flip = False
+                break
+            case _:
+                print("Nah uh Yes or No only!")
+    return flip
+
+flip = True
+while flip:
+    game()
+    flip = proceed()
